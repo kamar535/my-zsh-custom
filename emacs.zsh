@@ -10,15 +10,22 @@
 #
 # http://thegreyblog.blogspot.com/2017/12/starting-emacs-daemon-automatically-at.html
 
-function emacs()
+function eemacs()
 {
     # -c creates a new frame
+    # -t terminal mod
     # -a= fires a new emacs server if none is running
-    emacsclient -c -a= $*
+
+   if emacsclient --help | grep -- ^-c &>/dev/null; 
+   then 
+    emacsclient -c -a="" $* 
+   else
+    emacsclient -a="" $*
+   fi  
 }
+
+# NOTE: On macOS 10.14.6 Mojave, emacsclient does not support the -c option. 
 
 # Now, every time you invoke emacs in ZSH, the shell will run the emacs()
 # function instead, which will run emacsclient -c -a= and will forward all its
 # arguments to it.
-
-
